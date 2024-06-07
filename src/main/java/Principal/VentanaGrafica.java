@@ -5,9 +5,17 @@
 package Principal;
 
 /**
- *
  * @author isaac
  */
+//import para la fecha
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+//import para la grafica
+import java.awt.Color;
+
 public class VentanaGrafica extends javax.swing.JFrame {
 
     /**
@@ -31,13 +39,21 @@ public class VentanaGrafica extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         Lblfecha = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
         Grafica = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         lblNombre = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(832, 507));
+        setMinimumSize(new java.awt.Dimension(832, 507));
+        setPreferredSize(new java.awt.Dimension(832, 507));
+        setResizable(false);
+        setSize(new java.awt.Dimension(832, 507));
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
@@ -58,12 +74,19 @@ public class VentanaGrafica extends javax.swing.JFrame {
         jPanel2.add(jLabel2);
         jLabel2.setBounds(20, 10, 180, 0);
 
-        Lblfecha.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(Lblfecha);
-        Lblfecha.setBounds(60, 10, 90, 0);
+
+        //Fecha
+        Date fecha = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        lblFecha.setForeground(new java.awt.Color(255, 255, 255));
+        lblFecha.setText(formato.format(fecha));
+        jPanel2.add(lblFecha);
+        lblFecha.setBounds(70, 10, 110, 19);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(590, 10, 240, 30);
+        jPanel2.setBounds(590, 0, 240, 30);
 
         Grafica.setBackground(new java.awt.Color(255, 255, 255));
         Grafica.setLayout(null);
@@ -75,6 +98,11 @@ public class VentanaGrafica extends javax.swing.JFrame {
         jPanel4.add(lblNombre);
         lblNombre.setBounds(30, 10, 0, 0);
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Graficas");
+        jPanel4.add(jLabel3);
+        jLabel3.setBounds(50, 10, 120, 19);
+
         Grafica.add(jPanel4);
         jPanel4.setBounds(320, 20, 260, 40);
 
@@ -83,12 +111,20 @@ public class VentanaGrafica extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(51, 51, 51));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Cerrar Ventana");
+        jButton1.setText("Volver a votar");
         getContentPane().add(jButton1);
         jButton1.setBounds(580, 420, 190, 25);
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Mostrar Ganador", "Comparar ", "Todas las graficas", "Votos nulos"}));
+        jComboBox1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(580, 170, 210, 25);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
+
 
     /**
      * @param args the command line arguments
@@ -97,7 +133,7 @@ public class VentanaGrafica extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -130,11 +166,14 @@ public class VentanaGrafica extends javax.swing.JFrame {
     private javax.swing.JPanel Grafica;
     private javax.swing.JLabel Lblfecha;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }
