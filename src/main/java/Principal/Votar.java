@@ -393,19 +393,29 @@ public class Votar extends javax.swing.JFrame {
 
     private void btnAnularVotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularVotoActionPerformed
         // TODO add your handling code here:
-        
+
+
         //agrega un voto anulado al contador y al csv
         votosAnulados++;
+        FileWriter writer = null;
         try {
-            FileWriter writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteodenulos.csv");
-            writer.append("Voto anulado");
-            writer.append(",");
+            writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteodenulos.csv", true);
+            JOptionPane.showMessageDialog(null, "Voto anulado");
+            writer.append("Voto anulado,");
             writer.append(String.valueOf(votosAnulados));
             writer.append("\n");
 
         } catch (IOException e) {
             e.printStackTrace();
 
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 
