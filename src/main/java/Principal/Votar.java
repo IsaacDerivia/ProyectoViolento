@@ -10,6 +10,7 @@ package Principal;
 
 //import para sacar las fechas
 
+import javax.swing.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.io.FileWriter;
@@ -331,15 +332,16 @@ public class Votar extends javax.swing.JFrame {
     private void btnVotar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVotar1ActionPerformed
         // TODO add your handling code here:
         
-        //se suman los votos en un contador y se guarda en el archivo csv
+        //votos candidato 1
         votosCandidato1++;
         try {
-            FileWriter writer = new FileWriter("votos.csv");
-            writer.append("Candidato 1");
-            writer.append(",");
+            FileWriter writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteo.csv", true);
+            JOptionPane.showMessageDialog(null, "Voto registrado para candidato 1");
+            writer.append("ID,");
+            writer.append("Candidato 1,");
             writer.append(String.valueOf(votosCandidato1));
             writer.append("\n");
-
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -352,40 +354,40 @@ public class Votar extends javax.swing.JFrame {
 
     private void btnVotar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVotar2ActionPerformed
         // TODO add your handling code here:
-        
-        //votos para candidato 2
+        //votos candidato 2
         votosCandidato2++;
         try {
-            FileWriter writer = new FileWriter("votos.csv");
-            writer.append("Candidato 2");
-            writer.append(",");
+            FileWriter writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteo.csv", true);
+            JOptionPane.showMessageDialog(null, "Voto registrado para candidato 2");
+            writer.append("ID,");
+            writer.append("Candidato 2,");
             writer.append(String.valueOf(votosCandidato2));
             writer.append("\n");
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-
         }
         
     }//GEN-LAST:event_btnVotar2ActionPerformed
 
     private void btnVotar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVotar3ActionPerformed
         // TODO add your handling code here:
-        
+
         //votos candidato 3
         votosCandidato3++;
         try {
-            FileWriter writer = new FileWriter("votos.csv");
-            writer.append("Candidato 3");
-            writer.append(",");
+            FileWriter writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteo.csv", true);
+            JOptionPane.showMessageDialog(null, "Voto registrado para candidato 3");
+            writer.append("ID,");
+            writer.append("Candidato 3,");
             writer.append(String.valueOf(votosCandidato3));
             writer.append("\n");
+            writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-
         }
-
 
     }//GEN-LAST:event_btnVotar3ActionPerformed
 
@@ -395,7 +397,7 @@ public class Votar extends javax.swing.JFrame {
         //agrega un voto anulado al contador y al csv
         votosAnulados++;
         try {
-            FileWriter writer = new FileWriter("votos.csv");
+            FileWriter writer = new FileWriter("C:\\Users\\ST\\OneDrive\\Documentos\\Universidad\\4TO\\LENGUAJES DE PROGRAMACION\\Programas\\Java\\ProyectoViolento\\src\\main\\java\\Principal\\conteodenulos.csv");
             writer.append("Voto anulado");
             writer.append(",");
             writer.append(String.valueOf(votosAnulados));
