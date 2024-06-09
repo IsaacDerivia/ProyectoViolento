@@ -9,12 +9,26 @@ package Principal;
  */
 //import para la fecha
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 //import para la grafica
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+
+import javax.swing.*;
+
 
 public class VentanaGrafica extends javax.swing.JFrame {
 
@@ -114,22 +128,222 @@ public class VentanaGrafica extends javax.swing.JFrame {
         jButton1.setText("Volver a votar");
         getContentPane().add(jButton1);
         jButton1.setBounds(580, 420, 190, 25);
+        //boton para volver a votar
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Votar votar = new Votar();
+                votar.setVisible(true);
+                dispose();
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Mostrar Ganador", "Comparar ", "Todas las graficas", "Votos nulos"}));
         jComboBox1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         getContentPane().add(jComboBox1);
         jComboBox1.setBounds(580, 170, 210, 25);
 
+        //empieza en blanco el combobox
+        jComboBox1.setSelectedIndex(-1);
+
+
+        jComboBox1.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String item = (String) e.getItem();
+                    if (item.equals("Mostrar Ganador")) {
+                        // Crear la grafica de barras con los votos, obtiene los votos de contar
+                        Contar contar = new Contar();
+                        HashMap<String, Integer> votos = contar.getVotos();
+
+                        // Encontrar el ganador
+                        Map.Entry<String, Integer> maxEntry = null;
+                        for (Map.Entry<String, Integer> entry : votos.entrySet()) {
+                            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+                                maxEntry = entry;
+                            }
+                        }
+
+                        // Calcular el total de votos
+                        int totalVotos = 0;
+                        for (int voto : votos.values()) {
+                            totalVotos += voto;
+                        }
+
+                        // Calcular el porcentaje de votos del ganador
+                        double porcentajeVotosGanador = (double) maxEntry.getValue() / totalVotos * 100;
+
+                        // Asociar los IDs de los candidatos con sus nombres
+                        HashMap<String, String> nombresCandidatos = new HashMap<>();
+                        nombresCandidatos.put("1", "Alfaro");
+                        nombresCandidatos.put("2", "Muñito");
+                        nombresCandidatos.put("3", "Maynez");
+
+                        // Obtener el nombre del ganador usando su ID
+                        String nombreGanador = nombresCandidatos.get(maxEntry.getKey());
+
+                        // Crear la grafica de barras con solo el porcentaje de votos del ganador
+                        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                        dataset.addValue(porcentajeVotosGanador, "Porcentaje de votos", nombreGanador);
+                        JFreeChart chart = ChartFactory.createBarChart("Porcentaje de votos", "Candidato", "Porcentaje de votos", dataset);
+                        // Cambiar el color de la gráfica del ganador a azul
+                        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+                        renderer.setSeriesPaint(0, Color.BLUE);
+
+                        // Hacer que la barra sea más delgada
+                        renderer.setMaximumBarWidth(0.1); // Ajusta este valor según tus necesidades
+
+                        ChartPanel panel = new ChartPanel(chart);
+                        panel.setSize(Grafica.getWidth(), Grafica.getHeight());
+                        panel.setBackground(Color.WHITE);
+                        Grafica.removeAll();
+                        Grafica.add(panel);
+                        Grafica.revalidate();
+                        Grafica.repaint();
+
+                    } else if (item.equals("Comparar ")) {
+                        Contar contar = new Contar();
+                        HashMap<String, Integer> votos = contar.getVotos();
+
+                        // Calcular el total de votos
+                        int totalVotos = 0;
+                        for (int voto : votos.values()) {
+                            totalVotos += voto;
+                        }
+
+                        // Asociar los IDs de los candidatos con sus nombres
+                        HashMap<String, String> nombresCandidatos = new HashMap<>();
+                        nombresCandidatos.put("1", "Alfaro");
+                        nombresCandidatos.put("2", "Muñito");
+                        nombresCandidatos.put("3", "Maynez");
+
+                        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                        for (Map.Entry<String, Integer> entry : votos.entrySet()) {
+                            // Calcular el porcentaje de votos del candidato
+                            double porcentajeVotos = (double) entry.getValue() / totalVotos * 100;
+
+                            // Obtener el nombre del candidato usando su ID
+                            String nombreCandidato = nombresCandidatos.get(entry.getKey());
+
+                            dataset.addValue(porcentajeVotos, "Porcentaje de votos", nombreCandidato);
+                        }
+                        JFreeChart chart = ChartFactory.createBarChart("Porcentaje de votos", "Candidato", "Porcentaje de votos", dataset);
+                        //le da diferente color a cada barra
+                        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+                        renderer.setSeriesPaint(0, Color.BLUE);
+                        renderer.setSeriesPaint(1, Color.RED);
+                        renderer.setSeriesPaint(2, Color.GREEN);
+
+                        // Hacer que las barras sean más delgadas
+                        renderer.setMaximumBarWidth(0.1);
+                        ChartPanel panel = new ChartPanel(chart);
+                        panel.setSize(Grafica.getWidth(), Grafica.getHeight());
+                        panel.setBackground(Color.WHITE);
+                        Grafica.removeAll();
+                        Grafica.add(panel);
+                        Grafica.revalidate();
+                        Grafica.repaint();
+
+                    } else if (item.equals("Todas las graficas")) {
+                        // Crear la grafica de barras con todos los votos de los candidatos y los votos nulos
+                        Contar contar = new Contar();
+                        HashMap<String, Integer> votos = contar.getVotos();
+                        int votosNulos = contar.getVotosNulos();
+
+                        // Calcular el total de votos
+                        int totalVotos = votosNulos;
+                        for (int voto : votos.values()) {
+                            totalVotos += voto;
+                        }
+
+                        // Asociar los IDs de los candidatos con sus nombres
+                        HashMap<String, String> nombresCandidatos = new HashMap<>();
+                        nombresCandidatos.put("1", "Alfaro");
+                        nombresCandidatos.put("2", "Muñito");
+                        nombresCandidatos.put("3", "Maynez");
+
+                        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                        for (Map.Entry<String, Integer> entry : votos.entrySet()) {
+                            // Calcular el porcentaje de votos del candidato
+                            double porcentajeVotos = (double) entry.getValue() / totalVotos * 100;
+
+                            // Obtener el nombre del candidato usando su ID
+                            String nombreCandidato = nombresCandidatos.get(entry.getKey());
+                            dataset.addValue(porcentajeVotos, "Porcentaje de votos", nombreCandidato);
+                        }
+                        // Calcular el porcentaje de votos nulos
+                        double porcentajeVotosNulos = (double) votosNulos / totalVotos * 100;
+                        dataset.addValue(porcentajeVotosNulos, "Porcentaje de votos", "Votos nulos");
+
+                        JFreeChart chart = ChartFactory.createBarChart("Porcentaje de votos", "Candidato", "Porcentaje de votos", dataset);
+
+                        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+
+                        // Cambiar el color de todas las barras a un color aleatorio
+                        for (int i = 0; i < dataset.getRowCount(); i++) {
+                            // Generar un color aleatorio
+                            float r = (float) Math.random();
+                            float g = (float) Math.random();
+                            float b = (float) Math.random();
+                            Color randomColor = new Color(r, g, b);
+
+                            renderer.setSeriesPaint(i, randomColor);
+                        }
+                        // Hacer que las barras sean más delgadas
+                        renderer.setMaximumBarWidth(0.1);
+
+                        ChartPanel panel = new ChartPanel(chart);
+                        panel.setSize(Grafica.getWidth(), Grafica.getHeight());
+                        panel.setBackground(Color.WHITE);
+                        Grafica.removeAll();
+                        Grafica.add(panel);
+                        Grafica.revalidate();
+                        Grafica.repaint();
+
+
+                    } else if (item.equals("Votos nulos")) {
+                        // Crear la grafica de barras con los votos nulos
+                        Contar contar = new Contar();
+                        HashMap<String, Integer> votos = contar.getVotos();
+                        int votosNulos = contar.getVotosNulos();
+
+                        // Calcular el total de votos
+                        int totalVotos = votosNulos;
+                        for (int voto : votos.values()) {
+                            totalVotos += voto;
+                        }
+
+                        // Calcular el porcentaje de votos nulos
+                        double porcentajeVotosNulos = (double) votosNulos / totalVotos * 100;
+
+                        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+                        dataset.addValue(porcentajeVotosNulos, "Porcentaje de votos", "Votos nulos");
+                        JFreeChart chart = ChartFactory.createBarChart("Porcentaje de votos", "Candidato", "Porcentaje de votos", dataset);
+                        //hacer que la barra sea mas delgada
+                        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+                        renderer.setMaximumBarWidth(0.1);
+                        ChartPanel panel = new ChartPanel(chart);
+                        panel.setSize(Grafica.getWidth(), Grafica.getHeight());
+                        panel.setBackground(Color.WHITE);
+                        Grafica.removeAll();
+                        Grafica.add(panel);
+                        Grafica.revalidate();
+                        Grafica.repaint();
+
+
+                    }
+                }
+            }
+        });
+
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-
 
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
